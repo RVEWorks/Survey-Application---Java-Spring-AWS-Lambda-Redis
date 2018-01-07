@@ -1,0 +1,49 @@
+redis:
+  port: 6379
+  host: localhost
+---  
+
+
+service: survey-lambda
+
+provider:
+  name: aws
+  runtime: java8
+  memorySize: 1536
+  timeout: 60
+
+package:
+  artifact: build/distributions/survey-lambda.zip
+
+functions:
+  survey:
+    handler: com.sriniworks.survey.LambdaHandler
+    events:
+      - http:
+          path: survey
+          method: get
+          cors: true
+      - http:
+          path: survey/{id}
+          method: get
+          cors: true
+      - http:
+          path: survey/create
+          method: post
+          cors: true
+      - http:
+          path: survey/{id}
+          method: delete
+          cors: true         
+      - http:
+          path: survey/{id}/item/create
+          method: post
+          cors: true
+      - http:
+          path: survey/{id}/item/{item}
+          method: put
+          cors: true
+      - http:
+          path: survey/{id}/item/{item}
+          method: delete
+          cors: true
